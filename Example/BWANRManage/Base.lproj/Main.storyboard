@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="whP-gf-Uak">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="wQg-tq-qST">
+            <objects>
+                <viewController id="whP-gf-Uak" customClass="BWViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="uEw-UM-LJ8"/>
+                        <viewControllerLayoutGuide type="bottom" id="Mvr-aV-6Um"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="TpU-gO-2f1">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9xx-BR-BWp">
+                                <rect key="frame" x="141.5" y="248.5" width="92" height="30"/>
+                                <state key="normal" title="打开卡顿检测"/>
+                                <connections>
+                                    <action selector="openANR:" destination="whP-gf-Uak" eventType="touchUpInside" id="hpX-GD-mPF"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YQl-gN-iVb">
+                                <rect key="frame" x="20" y="298.5" width="335" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="1tI-wQ-mIw"/>
+                                </constraints>
+                                <state key="normal" title="卡顿测试"/>
+                                <connections>
+                                    <action selector="anrTest:" destination="whP-gf-Uak" eventType="touchUpInside" id="HpW-jc-bSy"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="9xx-BR-BWp" firstAttribute="centerY" secondItem="TpU-gO-2f1" secondAttribute="centerY" constant="-70" id="4vW-ke-7Nl"/>
+                            <constraint firstAttribute="trailing" secondItem="YQl-gN-iVb" secondAttribute="trailing" constant="20" id="ayv-4h-HQx"/>
+                            <constraint firstItem="YQl-gN-iVb" firstAttribute="leading" secondItem="TpU-gO-2f1" secondAttribute="leading" constant="20" id="fCX-b0-SnB"/>
+                            <constraint firstItem="9xx-BR-BWp" firstAttribute="centerX" secondItem="TpU-gO-2f1" secondAttribute="centerX" id="hNd-ch-IEO"/>
+                            <constraint firstItem="YQl-gN-iVb" firstAttribute="top" secondItem="9xx-BR-BWp" secondAttribute="bottom" constant="20" id="kOW-h5-kNP"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tc2-Qw-aMS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="305" y="433"/>
+        </scene>
+    </scenes>
+</document>
