@@ -1,6 +1,6 @@
 //
 //  DoraemonSandboxModel.h
-//  DoraemonKit-DoraemonKit
+//  BWANRManage
 //
 //  Created by yixiang on 2017/12/11.
 //
@@ -14,7 +14,7 @@ typedef NS_ENUM(NSInteger, DoraemonSandboxFileType) {
     DoraemonSandboxFileTypeRoot,//根目录
 };
 
-@interface DoraemonSandboxModel : NSObject
+@interface BWSandboxModel : NSObject
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *path;

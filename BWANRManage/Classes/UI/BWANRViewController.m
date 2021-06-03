@@ -31,7 +31,7 @@ static NSString *cellId = @"DoraemonANRListViewControllerCellID";
 }
 - (NSMutableArray *)dataSources {
 	if (!_dataSources) {
-		_dataSources = [[NSMutableArray alloc]initWithObjects:@"卡顿检测开关",@"记录",@"清空所有", nil];
+		_dataSources = [[NSMutableArray alloc]initWithObjects:@"卡顿检测开关",@"记录",@"清空所有",@"关闭面板",nil];
 	}
 	return _dataSources;
 }
@@ -91,6 +91,11 @@ static NSString *cellId = @"DoraemonANRListViewControllerCellID";
 	case 2: {
 		[self removieAll];
 	}
+	break;
+	case 3: {
+		[[BWANRManage sharedInstance]dissShow];
+	}
+	break;
 	default:
 		break;
 	}

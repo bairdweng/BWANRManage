@@ -1,17 +1,17 @@
 //
 //  DoraemonPingThread.m
-//  DoraemonKit-DoraemonKit
+//  BWANRManage
 //
-//  Created by yixiang on 2018/6/14.
+//  Created by bairdweng on 2021/6/2.
 //
 
-#import "DoraemonPingThread.h"
+#import "BWPingThread.h"
 #import <UIKit/UIKit.h>
 //#import "DoraemonUtil.h"
 #import "BWMonUtil.h"
-#import "DoraemonBacktraceLogger.h"
+#import "BWBacktraceLogger.h"
 
-@interface DoraemonPingThread()
+@interface BWPingThread()
 
 /**
  *  应用是否在活跃状态
@@ -47,7 +47,7 @@
 @property (nonatomic, assign) double startTimeValue;
 @end
 
-@implementation DoraemonPingThread
+@implementation BWPingThread
 
 - (instancetype)initWithThreshold:(double)threshold
                           handler:(DoraemonANRTrackerBlock)handler {
@@ -100,7 +100,7 @@
             });
             [NSThread sleepForTimeInterval:self.threshold];
             if (self.isMainThreadBlock) {
-                self.reportInfo = [DoraemonBacktraceLogger doraemon_backtraceOfMainThread];
+                self.reportInfo = [BWBacktraceLogger doraemon_backtraceOfMainThread];
             }
             dispatch_semaphore_wait(self.semaphore, dispatch_time(DISPATCH_TIME_NOW, 5.0 * NSEC_PER_SEC));
             {

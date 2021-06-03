@@ -21,8 +21,8 @@
 }
 
 
-- (IBAction)openANR:(id)sender {
-	[[BWANRManage sharedInstance] opeANRVcTarget:self];
+- (IBAction)openANR:(id)sender {    
+    [[BWANRManage sharedInstance]show];
 }
 
 - (IBAction)anrTest:(id)sender {

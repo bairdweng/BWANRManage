@@ -7,12 +7,14 @@
 
 #import "BWANRManage.h"
 #import "BWMonUtil.h"
-#import "DoraemonANRTracker.h"
+#import "BWANRTracker.h"
 #import "BWANRViewController.h"
 @interface BWANRManage ()
 
-@property (nonatomic, strong) DoraemonANRTracker *doraemonANRTracker;
+@property (nonatomic, strong) BWANRTracker *doraemonANRTracker;
 @property (nonatomic, copy) DoraemonANRManagerBlock block;
+
+@property (nonatomic, strong) UIWindow *entryWindow;
 /// 卡顿时间
 @property (nonatomic, assign) CGFloat timeOut;
 @property (nonatomic, assign) BOOL anrTrackOn;
@@ -30,10 +32,20 @@
 	return instance;
 }
 
+- (instancetype)init {
+	self = [super init];
+	if (self) {
+		BWANRViewController *anrVc = [BWANRViewController new];
+		UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:anrVc];
+		self.entryWindow.rootViewController = navi;
+	}
+	return self;
+}
+
 - (void)installTimeOut:(CGFloat)timeOut {
-	_doraemonANRTracker = [[DoraemonANRTracker alloc] init];
+	_doraemonANRTracker = [[BWANRTracker alloc] init];
 	_timeOut = timeOut;
-	_doraemonANRTracker = [[DoraemonANRTracker alloc] init];
+	_doraemonANRTracker = [[BWANRTracker alloc] init];
 	_anrTrackOn = [BWMonUtil isOn];
 	if (_anrTrackOn) {
 		[self start];
@@ -45,10 +57,24 @@
 		[fm removeItemAtPath:[BWMonUtil anrDirectory] error:nil];
 	}
 }
-- (void)opeANRVcTarget:(UIViewController *)vc {
-	BWANRViewController *anrVc = [BWANRViewController new];
-	UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:anrVc];
-	[vc presentViewController:navi animated:YES completion:nil];
+/// 打开
+- (void)show {
+	self.entryWindow.hidden = NO;
+	[UIView animateWithDuration:0.3 animations:^{
+	         self.entryWindow.frame = UIScreen.mainScreen.bounds;
+	 }];
+}
+/// 关闭面板
+- (void)dissShow {
+	CGFloat width = CGRectGetWidth(UIScreen.mainScreen.bounds);
+	CGFloat height = CGRectGetHeight(UIScreen.mainScreen.bounds);
+	[UIView animateWithDuration:0.3 animations:^{
+	         self.entryWindow.frame = CGRectMake(0, height, width, height);
+	 } completion:^(BOOL finished) {
+	         if (finished) {
+			 self.entryWindow.hidden = YES;
+		 }
+	 }];
 }
 
 - (void)addANRBlock:(DoraemonANRManagerBlock)block {
@@ -90,6 +116,20 @@
 - (void)setAnrTrackOn:(BOOL)anrTrackOn {
 	_anrTrackOn = anrTrackOn;
 	[BWMonUtil saveANRTrackSwitch:anrTrackOn];
+}
+
+#pragma mark Getter
+- (UIWindow *)entryWindow {
+	if (!_entryWindow) {
+		CGFloat width = CGRectGetWidth(UIScreen.mainScreen.bounds);
+		CGFloat height = CGRectGetHeight(UIScreen.mainScreen.bounds);
+		_entryWindow = [[UIWindow alloc]initWithFrame:CGRectMake(0, height, width, height)];
+		// 设置为最高级别
+		_entryWindow.windowLevel = UIWindowLevelStatusBar + 100.f;
+		// 默认为隐藏
+		_entryWindow.hidden = YES;
+	}
+	return _entryWindow;
 }
 
 @end

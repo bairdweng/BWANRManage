@@ -1,6 +1,6 @@
 //
 //  DoraemonANRListViewController.m
-//  DoraemonKit-DoraemonKit
+//  BWANRManage
 //
 //  Created by bairdweng on 2018/6/15.
 //
@@ -8,9 +8,9 @@
 #import "BWANRListViewController.h"
 #import "BWANRManage.h"
 #import "BWANRDetailViewController.h"
-#import "DoraemonSandboxModel.h"
+#import "BWSandboxModel.h"
 #import "BWMonUtil.h"
-#import "DoraemonDefine.h"
+//#import "DoraemonDefine.h"
 @interface BWANRListViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -82,7 +82,7 @@
 			 NSString *fullPath = [targetPath stringByAppendingPathComponent:sortedPath];
 			 [fm fileExistsAtPath:fullPath isDirectory:&isDir];
 
-			 DoraemonSandboxModel *model = [[DoraemonSandboxModel alloc] init];
+			 BWSandboxModel *model = [[BWSandboxModel alloc] init];
 			 model.path = fullPath;
 			 if (isDir) {
 				 model.type = DoraemonSandboxFileTypeDirectory;
@@ -99,7 +99,7 @@
 	[self.tableView reloadData];
 }
 
-- (void)deleteByDoraemonSandboxModel:(DoraemonSandboxModel *)model {
+- (void)deleteByDoraemonSandboxModel:(BWSandboxModel *)model {
 	NSFileManager *fm = [NSFileManager defaultManager];
 	[fm removeItemAtPath:model.path error:nil];
 
@@ -134,7 +134,7 @@
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifer];
 	}
 	if (indexPath.row < self.anrArray.count) {
-		DoraemonSandboxModel *model = [self.anrArray objectAtIndex:indexPath.row];
+		BWSandboxModel *model = [self.anrArray objectAtIndex:indexPath.row];
 		cell.textLabel.text = model.name;
 	}
 	return cell;
@@ -143,7 +143,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	if (indexPath.row < self.anrArray.count) {
-		DoraemonSandboxModel *model = [self.anrArray objectAtIndex:indexPath.row];
+		BWSandboxModel *model = [self.anrArray objectAtIndex:indexPath.row];
 		if (model.type == DoraemonSandboxFileTypeFile) {
 			BWANRDetailViewController *vc = [[BWANRDetailViewController alloc] init];
 			vc.filePath = model.path;
@@ -164,7 +164,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.row < self.anrArray.count) {
-		DoraemonSandboxModel *model = self.anrArray[indexPath.row];
+		BWSandboxModel *model = self.anrArray[indexPath.row];
 		[self deleteByDoraemonSandboxModel:model];
 	}
 }

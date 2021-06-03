@@ -1,8 +1,8 @@
 //
-//  DoraemonBacktraceLogger.h
-//  DoraemonKit-DoraemonKit
+//  BWBacktraceLogger.h
+//  BWANRManage
 //
-//  Created by didi on 2020/3/18.
+//  Created by bairdweng on 2020/3/18.
 //
 
 #import <Foundation/Foundation.h>
@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 #define DoraemonBSLOG_MAIN NSLog(@"%@",[BSBacktraceLogger bs_backtraceOfMainThread]);
 #define DoraemonBSLOG_ALL NSLog(@"%@",[BSBacktraceLogger bs_backtraceOfAllThread]);
 
-@interface DoraemonBacktraceLogger : NSObject
+@interface BWBacktraceLogger : NSObject
 
 + (NSString *)doraemon_backtraceOfAllThread;
 + (NSString *)doraemon_backtraceOfCurrentThread;

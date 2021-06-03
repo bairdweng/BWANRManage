@@ -1,11 +1,11 @@
 //
-//  DoraemonBacktraceLogger.m
-//  DoraemonKit-DoraemonKit
+//  BWBacktraceLogger.m
+//  BWANRManage
 //
-//  Created by didi on 2020/3/18.
+//  Created by bairdweng on 2020/3/18.
 //
 
-#import "DoraemonBacktraceLogger.h"
+#import "BWBacktraceLogger.h"
 #import <mach/mach.h>
 #include <dlfcn.h>
 #include <pthread.h>
@@ -71,7 +71,7 @@ typedef struct DoraemonStackFrameEntry{
 
 static mach_port_t main_thread_id;
 
-@implementation DoraemonBacktraceLogger
+@implementation BWBacktraceLogger
 
 
 + (void)load {

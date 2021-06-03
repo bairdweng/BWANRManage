@@ -1,8 +1,8 @@
 //
 //  DoraemonPingThread.h
-//  DoraemonKit-DoraemonKit
+//  BWANRManage
 //
-//  Created by yixiang on 2018/6/14.
+//  Created by bairdweng on 2021/6/2.
 //
 
 // 参考ONEANRTracker
@@ -15,7 +15,7 @@ typedef void (^DoraemonANRTrackerBlock)(NSDictionary *info);
  *  用于Ping主线程的线程类
  *  通过信号量控制来Ping主线程，判断主线程是否卡顿
  */
-@interface DoraemonPingThread : NSThread
+@interface BWPingThread : NSThread
 
 /**
  *  初始化Ping主线程的线程类

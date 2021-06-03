@@ -1,14 +1,14 @@
 //
-//  DoraemonANRTracker.h
-//  DoraemonKit-DoraemonKit
+//  BWANRTracker.h
+//  BWANRManage
 //
-//  Created by yixiang on 2018/6/14.
+//  Created by bairdweng on 2021/6/2.
 //
 
 // 参考ONEANRTracker
 
 #import <Foundation/Foundation.h>
-#import "DoraemonPingThread.h"
+#import "BWPingThread.h"
 
 //ANR监控状态枚举
 typedef NS_ENUM(NSUInteger, DoraemonANRTrackerStatus) {
@@ -19,7 +19,7 @@ typedef NS_ENUM(NSUInteger, DoraemonANRTrackerStatus) {
 /**
  *  主线程卡顿监控类
  */
-@interface DoraemonANRTracker : NSObject
+@interface BWANRTracker : NSObject
 
 /**
  *  开始监控

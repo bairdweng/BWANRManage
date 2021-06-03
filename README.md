@@ -9,9 +9,7 @@
 
 ```objective-c
 // 打开面板
-[[BWANRManage sharedInstance] opeANRVcTarget:self];
+[[BWANRManage sharedInstance]show];
 ```
+![read](./imgs/read.png)
 
-![1](./imgs/1.png)
-![1](./imgs/2.png)
-![1](./imgs/3.png)

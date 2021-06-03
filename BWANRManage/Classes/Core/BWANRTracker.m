@@ -1,26 +1,26 @@
 //
-//  DoraemonANRTracker.m
-//  DoraemonKit-DoraemonKit
+//  BWANRTracker.m
+//  BWANRManage
 //
-//  Created by yixiang on 2018/6/14.
+//  Created by bairdweng on 2021/6/2.
 //
 
-#import "DoraemonANRTracker.h"
+#import "BWANRTracker.h"
 #import "sys/utsname.h"
 
 /**
  *  主线程卡顿监控看门狗类
  */
-@interface DoraemonANRTracker ()
+@interface BWANRTracker ()
 
 /**
  *  用于Ping主线程的线程实例
  */
-@property (nonatomic, strong) DoraemonPingThread *pingThread;
+@property (nonatomic, strong) BWPingThread *pingThread;
 
 @end
 
-@implementation DoraemonANRTracker
+@implementation BWANRTracker
 
 - (instancetype)init
 {
@@ -33,7 +33,7 @@
 - (void)startWithThreshold:(double)threshold
         handler:(DoraemonANRTrackerBlock)handler {
 
-	self.pingThread = [[DoraemonPingThread alloc] initWithThreshold:threshold
+	self.pingThread = [[BWPingThread alloc] initWithThreshold:threshold
 	                   handler:^(NSDictionary *info) {
 	                           handler(info);
 			   }];

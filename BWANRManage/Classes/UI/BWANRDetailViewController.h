@@ -1,6 +1,6 @@
 //
 //  BWANRDetailViewController.h
-//  DoraemonKit-DoraemonKit
+//  BWANRManage
 //
 //  Created by bairdweng on 2018/6/16.
 //

@@ -19,8 +19,9 @@ typedef void (^DoraemonANRManagerBlock)(NSDictionary *anrInfo);
 /// @param timeOut 卡顿时间s
 - (void)installTimeOut:(CGFloat)timeOut;
 /// 打开
-/// @param vc 当前控制器
-- (void)opeANRVcTarget:(UIViewController *)vc;
+- (void)show;
+/// 关闭面板
+- (void)dissShow;
 
 /// 不建议直接调用
 - (void)start;
