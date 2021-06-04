@@ -7,11 +7,10 @@
 
 #import "BWPingThread.h"
 #import <UIKit/UIKit.h>
-//#import "DoraemonUtil.h"
 #import "BWMonUtil.h"
 #import "BWBacktraceLogger.h"
-
-@interface BWPingThread()
+#import "BWANRManage.h"
+@interface BWPingThread ()
 
 /**
  *  应用是否在活跃状态
@@ -23,10 +22,6 @@
  */
 @property (nonatomic, strong) dispatch_semaphore_t semaphore;
 
-/**
- *  卡顿阈值
- */
-@property (nonatomic, assign) double threshold;
 
 /**
  *  卡顿回调
@@ -49,77 +44,78 @@
 
 @implementation BWPingThread
 
-- (instancetype)initWithThreshold:(double)threshold
-                          handler:(DoraemonANRTrackerBlock)handler {
-    self = [super init];
-    if (self) {
-        self.semaphore = dispatch_semaphore_create(0);
-        
-        self.threshold = threshold;
-        self.handler = handler;
-        _isApplicationInActive = YES;
-        
-        [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(applicationDidBecomeActive) name: UIApplicationDidBecomeActiveNotification object: nil];
-        [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(applicationDidEnterBackground) name: UIApplicationDidEnterBackgroundNotification object: nil];
-    }
-    return self;
+- (instancetype)initWithThresholdHandler:(DoraemonANRTrackerBlock)handler {
+	self = [super init];
+	if (self) {
+		self.semaphore = dispatch_semaphore_create(0);
+
+		self.handler = handler;
+		_isApplicationInActive = YES;
+
+		[[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(applicationDidBecomeActive) name: UIApplicationDidBecomeActiveNotification object: nil];
+		[[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(applicationDidEnterBackground) name: UIApplicationDidEnterBackgroundNotification object: nil];
+	}
+	return self;
 }
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver: self];
+	[[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
 - (void)main {
-    //判断是否需要上报
-    __weak typeof(self) weakSelf = self;
-    void (^ verifyReport)(void) = ^() {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        if (strongSelf.reportInfo.length > 0) {
-            if (strongSelf.handler) {
-                double responseTimeValue = [[NSDate date] timeIntervalSince1970];
-                double duration = (responseTimeValue - strongSelf.startTimeValue)*1000;
-                strongSelf.handler(@{
-                                     @"title": [BWMonUtil dateFormatNow].length > 0 ? [BWMonUtil dateFormatNow] : @"",
-                                     @"duration": [NSString stringWithFormat:@"%.0f",duration],//单位ms
-                                     @"content": strongSelf.reportInfo
-                                     });
-            }
-            strongSelf.reportInfo = @"";
-        }
-    };
-    
-    while (!self.cancelled) {
-        if (_isApplicationInActive) {
-            self.mainThreadBlock = YES;
-            self.reportInfo = @"";
-            self.startTimeValue = [[NSDate date] timeIntervalSince1970];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.mainThreadBlock = NO;
-                verifyReport();
-                dispatch_semaphore_signal(self.semaphore);
-            });
-            [NSThread sleepForTimeInterval:self.threshold];
-            if (self.isMainThreadBlock) {
-                self.reportInfo = [BWBacktraceLogger doraemon_backtraceOfMainThread];
-            }
-            dispatch_semaphore_wait(self.semaphore, dispatch_time(DISPATCH_TIME_NOW, 5.0 * NSEC_PER_SEC));
-            {
-                //卡顿超时情况;
-                verifyReport();
-            }
-        } else {
-            [NSThread sleepForTimeInterval:self.threshold];
-        }
-    }
+	//判断是否需要上报
+	__weak typeof(self) weakSelf = self;
+	void (^ verifyReport)(void) = ^() {
+		__strong typeof(weakSelf) strongSelf = weakSelf;
+		if (strongSelf.reportInfo.length > 0) {
+			if (strongSelf.handler) {
+				double responseTimeValue = [[NSDate date] timeIntervalSince1970];
+				double duration = (responseTimeValue - strongSelf.startTimeValue)*1000;
+				strongSelf.handler(@{
+					@"title": [BWMonUtil dateFormatNow].length > 0 ? [BWMonUtil dateFormatNow] : @"",
+					@"duration": [NSString stringWithFormat:@"%.0f",duration],//单位ms
+					@"content": strongSelf.reportInfo
+					});
+			}
+			strongSelf.reportInfo = @"";
+		}
+	};
+
+	while (!self.cancelled) {
+		// 读取卡顿的时间
+		double threshold = [BWMonUtil sharedInstance].threshold;
+		if (_isApplicationInActive) {
+			self.mainThreadBlock = YES;
+			self.reportInfo = @"";
+			self.startTimeValue = [[NSDate date] timeIntervalSince1970];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				self.mainThreadBlock = NO;
+				verifyReport();
+				dispatch_semaphore_signal(self.semaphore);
+			});
+			// 如果达到休眠阀值，主线程还未执行完，说明已经卡顿了。
+			[NSThread sleepForTimeInterval:threshold];
+			if (self.isMainThreadBlock) {
+				self.reportInfo = [BWBacktraceLogger doraemon_backtraceOfMainThread];
+			}
+			dispatch_semaphore_wait(self.semaphore, dispatch_time(DISPATCH_TIME_NOW, 5.0 * NSEC_PER_SEC));
+			{
+				//卡顿超时情况;
+				verifyReport();
+			}
+		} else {
+			[NSThread sleepForTimeInterval:threshold];
+		}
+	}
 }
 
 #pragma mark - Notific ation
 - (void)applicationDidBecomeActive {
-    _isApplicationInActive = YES;
+	_isApplicationInActive = YES;
 }
 
 - (void)applicationDidEnterBackground {
-    _isApplicationInActive = NO;
+	_isApplicationInActive = NO;
 }
 
 @end

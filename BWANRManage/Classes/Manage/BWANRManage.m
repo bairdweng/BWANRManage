@@ -11,12 +11,11 @@
 #import "BWANRViewController.h"
 @interface BWANRManage ()
 
-@property (nonatomic, strong) BWANRTracker *doraemonANRTracker;
-@property (nonatomic, copy) DoraemonANRManagerBlock block;
+@property (nonatomic, strong) BWANRTracker *anrTracker;
+@property (nonatomic, copy) BWANRManagerBlock block;
 
 @property (nonatomic, strong) UIWindow *entryWindow;
-/// 卡顿时间
-@property (nonatomic, assign) CGFloat timeOut;
+
 @property (nonatomic, assign) BOOL anrTrackOn;
 
 @end
@@ -42,10 +41,8 @@
 	return self;
 }
 
-- (void)installTimeOut:(CGFloat)timeOut {
-	_doraemonANRTracker = [[BWANRTracker alloc] init];
-	_timeOut = timeOut;
-	_doraemonANRTracker = [[BWANRTracker alloc] init];
+- (void)install {
+	_anrTracker = [[BWANRTracker alloc] init];
 	_anrTrackOn = [BWMonUtil isOn];
 	if (_anrTrackOn) {
 		[self start];
@@ -77,17 +74,17 @@
 	 }];
 }
 
-- (void)addANRBlock:(DoraemonANRManagerBlock)block {
+- (void)addANRBlock:(BWANRManagerBlock)block {
 	self.block = block;
 }
 
 - (void)start {
-	if (!_doraemonANRTracker) {
+	if (!_anrTracker) {
 		NSLog(@"插件未安装");
 		return;
 	}
 	__weak typeof(self) weakSelf = self;
-	[self.doraemonANRTracker startWithThreshold:self.timeOut handler:^(NSDictionary *info) {
+	[self.anrTracker startWithThresholdhandler:^(NSDictionary *info) {
 	         __strong typeof(weakSelf) strongSelf = weakSelf;
 	         [strongSelf dumpWithInfo:info];
 	 }];
@@ -110,7 +107,7 @@
 }
 
 - (void)stop {
-	[self.doraemonANRTracker stop];
+	[self.anrTracker stop];
 }
 
 - (void)setAnrTrackOn:(BOOL)anrTrackOn {

@@ -10,6 +10,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BWMonUtil : NSObject
++ (instancetype)sharedInstance;
+
+@property(nonatomic, assign) double threshold;
+
 + (NSString *)dateFormatNow;
 /// 保存状态
 + (void)saveANRTrackSwitch:(BOOL)on;
@@ -18,6 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 目录
 + (NSString *)anrDirectory;
 + (BOOL)isOn;
+/// 设置卡顿阀值
++ (void)setThresholdTime:(double)time;
++ (double)thresholdTime;
 @end
 
 NS_ASSUME_NONNULL_END

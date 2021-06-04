@@ -7,7 +7,7 @@
 
 #import "BWANRTracker.h"
 #import "sys/utsname.h"
-
+#import "BWANRManage.h"
 /**
  *  主线程卡顿监控看门狗类
  */
@@ -30,11 +30,9 @@
 	return self;
 }
 
-- (void)startWithThreshold:(double)threshold
-        handler:(DoraemonANRTrackerBlock)handler {
-
-	self.pingThread = [[BWPingThread alloc] initWithThreshold:threshold
-	                   handler:^(NSDictionary *info) {
+- (void)startWithThresholdhandler:(DoraemonANRTrackerBlock)handler {
+    
+	self.pingThread = [[BWPingThread alloc]initWithThresholdHandler:^(NSDictionary *info) {
 	                           handler(info);
 			   }];
 

@@ -19,11 +19,8 @@ typedef void (^DoraemonANRTrackerBlock)(NSDictionary *info);
 
 /**
  *  初始化Ping主线程的线程类
- *
- *  @param threshold 主线程卡顿阈值
  *  @param handler   监控到卡顿回调
  */
-- (instancetype)initWithThreshold:(double)threshold
-                          handler:(DoraemonANRTrackerBlock)handler;
+- (instancetype)initWithThresholdHandler:(DoraemonANRTrackerBlock)handler;
 
 @end

@@ -16,6 +16,10 @@ static NSString *cellId = @"DoraemonANRListViewControllerCellID";
 
 @property(nonatomic, strong) NSMutableArray *dataSources;
 
+@property(nonatomic, strong) UIView *headerView;
+
+@property(nonatomic, strong) UILabel *titleLabel;
+
 @end
 
 @implementation BWANRViewController
@@ -23,12 +27,16 @@ static NSString *cellId = @"DoraemonANRListViewControllerCellID";
 	[super viewDidLayoutSubviews];
 	_tableView.frame = self.view.bounds;
 }
+
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	self.title = @"卡顿检测";
 	[self.view addSubview:self.tableView];
+	self.tableView.tableHeaderView = self.headerView;
 	// Do any additional setup after loading the view from its nib.
 }
+
+#pragma mark Getter
 - (NSMutableArray *)dataSources {
 	if (!_dataSources) {
 		_dataSources = [[NSMutableArray alloc]initWithObjects:@"卡顿检测开关",@"记录",@"清空所有",@"关闭面板",nil];
@@ -44,6 +52,66 @@ static NSString *cellId = @"DoraemonANRListViewControllerCellID";
 		[_tableView registerClass:UITableViewCell.class forCellReuseIdentifier:cellId];
 	}
 	return _tableView;
+}
+
+- (UIView *)headerView {
+	if (!_headerView) {
+		CGFloat headerViewHeight = 60;
+		_headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, headerViewHeight)];
+		CGFloat labelWidth = 80;
+		CGFloat labelX = 15;
+
+		CGFloat sliderX = labelWidth + 10 + labelX;
+
+		// 显示的文字
+		double threShold = [BWMonUtil sharedInstance].threshold;
+		[_headerView addSubview:self.titleLabel];
+		self.titleLabel.frame = CGRectMake(labelX, 10, labelWidth, 20);
+		self.titleLabel.font = [UIFont systemFontOfSize:12];
+		self.titleLabel.textAlignment = NSTextAlignmentLeft;
+		self.titleLabel.text = [NSString stringWithFormat:@"阀值:%.fms",threShold * 1000];
+
+		// 滑动
+		UISlider *slider = [[UISlider alloc]initWithFrame:CGRectMake(sliderX, 10, self.view.bounds.size.width - sliderX, 20)];
+		[slider addTarget:self action:@selector(sliderValueChange:) forControlEvents:UIControlEventValueChanged];
+		slider.value = [BWMonUtil sharedInstance].threshold;
+		[_headerView addSubview:slider];
+
+		// 说明
+		UILabel *desLabel = [UILabel new];
+		desLabel.font = [UIFont systemFontOfSize:10];
+		desLabel.textColor = [UIColor grayColor];
+		desLabel.textAlignment = NSTextAlignmentLeft;
+		desLabel.text = @"设置卡顿时间为多少时，会记录堆栈数据，最低为200ms";
+		[_headerView addSubview:desLabel];
+		desLabel.frame = CGRectMake(labelX, headerViewHeight - 20, self.view.bounds.size.width - labelX, 20);
+	}
+	return _headerView;
+}
+
+
+- (void)sliderValueChange:(UISlider *)slider {
+	[[BWMonUtil sharedInstance] setThreshold:slider.value];
+	double timer = slider.value;
+	if (timer < 0.2) {
+		timer = 0.2;
+	}
+	else if (timer > 1) {
+		timer = 1;
+	}
+	else {}
+	slider.value = timer;
+	self.titleLabel.text = [NSString stringWithFormat:@"阀值:%.fms",timer * 1000];
+	[BWMonUtil setThresholdTime:timer];
+}
+
+- (UILabel *)titleLabel {
+	if (!_titleLabel) {
+		_titleLabel = [UILabel new];
+		_titleLabel.font = [UIFont systemFontOfSize:14];
+		_titleLabel.textColor = [UIColor grayColor];
+	}
+	return _titleLabel;
 }
 
 
@@ -102,6 +170,10 @@ static NSString *cellId = @"DoraemonANRListViewControllerCellID";
 }
 
 - (void)removieAll {
+	self.title = @"记录已删除";
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+		self.title = @"卡顿检测";
+	});
 	NSFileManager *fm = [NSFileManager defaultManager];
 	[fm removeItemAtPath:[BWMonUtil anrDirectory] error:nil];
 }

@@ -10,7 +10,6 @@
 #import "BWANRDetailViewController.h"
 #import "BWSandboxModel.h"
 #import "BWMonUtil.h"
-//#import "DoraemonDefine.h"
 @interface BWANRListViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;

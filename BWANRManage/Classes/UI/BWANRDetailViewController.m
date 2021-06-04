@@ -22,9 +22,9 @@ const CGFloat fontSize = 8.f;
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(clickOntheCopy)];
-	self.view.backgroundColor = [UIColor whiteColor];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"复制" style:UIBarButtonItemStylePlain target:self action:@selector(clickOntheCopy)];
 
+	self.view.backgroundColor = [UIColor whiteColor];
 	self.anrInfo = [NSDictionary dictionaryWithContentsOfFile:self.filePath];
 	self.title = [NSString stringWithFormat:@"%@ms",_anrInfo[@"duration"]];
 	self.textScrollView.frame = self.view.bounds;
@@ -44,9 +44,10 @@ const CGFloat fontSize = 8.f;
 - (void)clickOntheCopy {
 	UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
 	pasteboard.string = self.contentLabel.text;
-	self.title = @"复制成功";
+	NSString *lastTitle = self.title.copy;
+	self.title = @"已复制到粘贴板";
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-		self.title = [NSString stringWithFormat:@"%@ms",self.anrInfo[@"duration"]];
+		self.title = lastTitle;
 	});
 }
 - (UIScrollView *)textScrollView {

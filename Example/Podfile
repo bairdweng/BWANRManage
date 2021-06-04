@@ -3,7 +3,6 @@ use_frameworks!
 platform :ios, '9.0'
 
 target 'BWANRManage_Example' do
-  use_frameworks!
   pod 'BWANRManage', :path => '../'
 
   target 'BWANRManage_Tests' do

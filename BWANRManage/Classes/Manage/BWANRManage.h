@@ -9,15 +9,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^DoraemonANRManagerBlock)(NSDictionary *anrInfo);
+typedef void (^BWANRManagerBlock)(NSDictionary *anrInfo);
 
 @interface BWANRManage : NSObject
 
 + (instancetype)sharedInstance;
 
 /// 初始化安装
-/// @param timeOut 卡顿时间s
-- (void)installTimeOut:(CGFloat)timeOut;
+- (void)install;
 /// 打开
 - (void)show;
 /// 关闭面板

@@ -14,8 +14,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 	// Override point for customization after application launch.
-//    [[BWANRManage sharedInstance]install];
-	[[BWANRManage sharedInstance]installTimeOut:0.2];
+
+	[[BWANRManage sharedInstance]install];
 	return YES;
 }
 

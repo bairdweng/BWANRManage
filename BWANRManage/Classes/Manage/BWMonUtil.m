@@ -7,8 +7,28 @@
 
 #import "BWMonUtil.h"
 static NSString * const kDoraemonANRTrackKey = @"doraemon_anr_track_key";
+static NSString * const BWANRTimeTrackKey = @"BWANRTimeTrackKey";
 
 @implementation BWMonUtil
+
++ (instancetype)sharedInstance {
+	static id instance = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		instance = [[self alloc] init];
+        
+	});
+	return instance;
+}
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _threshold = [BWMonUtil thresholdTime];
+    }
+    return self;
+}
+
+
 + (NSString *)dateFormatNow {
 	NSDate *date = [NSDate date];
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -20,6 +40,18 @@ static NSString * const kDoraemonANRTrackKey = @"doraemon_anr_track_key";
 + (void)saveANRTrackSwitch:(BOOL)on {
 	[[NSUserDefaults standardUserDefaults] setBool:on forKey:kDoraemonANRTrackKey];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+/// 设置卡顿阀值
++ (void)setThresholdTime:(double)time {
+	[BWMonUtil sharedInstance].threshold = time;
+	[[NSUserDefaults standardUserDefaults] setDouble:time forKey:BWANRTimeTrackKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
++ (double)thresholdTime {
+	double value =  [[[NSUserDefaults standardUserDefaults]objectForKey:BWANRTimeTrackKey]doubleValue];
+	return value > 0 ? value : 0.5;
 }
 
 + (BOOL)isOn {
