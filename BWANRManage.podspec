@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'BWANRManage'
-  s.version          = '0.1.0'
+  s.version          = '1.0.0'
   s.summary          = 'A short description of BWANRManage.'
 
 # This description is used to generate tags and improve search results.
@@ -22,21 +22,12 @@ TODO: Add long description of the pod here.
                        DESC
 
   s.homepage         = 'https://github.com/bairdweng/BWANRManage'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'bairdweng' => 'wengxianjiang@miya818.com' }
+  s.author           = { 'bairdweng' => 'bairdweng@gmail.com' }
   s.source           = { :git => 'https://github.com/bairdweng/BWANRManage.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
-
   s.ios.deployment_target = '9.0'
 
   s.source_files = 'BWANRManage/Classes/**/*'
+  s.public_header_files = 'Pod/Classes/Manage/BWANRManage.h'
   
-  # s.resource_bundles = {
-  #   'BWANRManage' => ['BWANRManage/Assets/*.png']
-  # }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
 end

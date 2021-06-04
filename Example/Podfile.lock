@@ -1,5 +1,5 @@
 PODS:
-  - BWANRManage (0.1.0)
+  - BWANRManage (1.0.0)
 
 DEPENDENCIES:
   - BWANRManage (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  BWANRManage: 74a05124e4fa083d4a98b9aa9a53dbf738c1d34f
+  BWANRManage: fb582ccbc997b4be81f9c4ff312fc3a5dfdc67c0
 
 PODFILE CHECKSUM: c5dc1444c49143560d398700fab448d8182f8fcf
 
