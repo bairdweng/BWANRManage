@@ -11,5 +11,9 @@
 // 打开面板
 [[BWANRManage sharedInstance]show];
 ```
+```js
+pod 'BWANRManage'
+```
+
 ![read](./imgs/read.png)
 
