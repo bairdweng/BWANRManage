@@ -4,7 +4,7 @@
 
 ```objective-c
 // 安装	
-[[BWANRManage sharedInstance]installTimeOut:0.2];
+[[BWANRManage sharedInstance]install];
 ```
 
 ```objective-c
